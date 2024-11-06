@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CapaEntidades.MovimientoInventario>;
+@{
+    ViewData["Title"] = "Lista de Movimiento de Inventarios";
+}
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+    </div>
+}
+
+<div class="container-md">
+    <div class="row p-1" id="fila_BotonNuevo-Filtro">
+        <div class="col-sm text-center text-sm-start " id="botonNuevo">
+            <a asp-action="Insertar" asp-asp-controller="Cargos" class="btn btn-success">Nuevo Movimiento Inventario</a>
+        </div>
+        <div class="col-sm text-center text-sm-end" id="formularioFiltro">
+        </div>
+    </div>
+</div>
+
+
+<div class="container-md">
+    <div class="row p-1">
+        <div class="card border">
+            <div class="card-header">
+                <h3 class="text-center">Lista de cargos</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    @if (Model.Count() > 0)
+                    {
+                        <table id="tablaindex" class="table table-striped table-bodered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(m => m.FECHA_TRANSACCION)</th>
+                                    <th>@Html.DisplayNameFor(m => m.TIPO_DOCUMENTO)</th>
+                                    <th>@Html.DisplayNameFor(m => m.NRO_DOCUMENTO)</th>
+                                    <th>@Html.DisplayNameFor(m => m.ALMACEN_DESTINO)</th>
+
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(m => item.FECHA_TRANSACCION)</td>
+                                        <td>@Html.DisplayFor(m => item.TIPO_DOCUMENTO)</td>
+                                        <td>@Html.DisplayFor(m => item.NRO_DOCUMENTO)</td>
+                                        <td>@Html.DisplayFor(m => item.ALMACEN_DESTINO)</td>
+                                        <td>
+                                            <a class="btn btn-primary" asp-action="Actualizar" asp-route-id="">Editar</a>
+                                            <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="">Borrar</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No hay registros</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
