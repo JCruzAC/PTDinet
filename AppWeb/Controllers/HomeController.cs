@@ -18,13 +18,51 @@ namespace AppWeb.Controllers
             _movimientoInventarioService = movimientoInventarioService;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string? fechaInicio, string? fechaFin, string tipoMovimiento, string numeroDocumento)
         {
-            List<MovimientoInventario> lista = await _movimientoInventarioService.ListadoMovimientoInventario(null,null,null,null);
+            DateTime? fechaInicioParsed=null, fechaFinParsed=null;
+
+            if (!string.IsNullOrEmpty(fechaInicio) && DateTime.TryParse(fechaInicio, out DateTime parsedFechaInicio))
+            {
+                fechaInicioParsed = parsedFechaInicio;
+            }
+
+            if (!string.IsNullOrEmpty(fechaFin) && DateTime.TryParse(fechaFin, out DateTime parsedFechaFin))
+            {
+                fechaFinParsed = parsedFechaFin;
+            }
+            List<MovimientoInventario> lista = await _movimientoInventarioService
+                .ListadoMovimientoInventario( fechaInicioParsed,fechaFinParsed, tipoMovimiento, numeroDocumento);
             TempData["Mensaje"] = _movimientoInventarioService._message;
+            ViewBag.fechaInicio = fechaInicio;//?.ToString("yyyy-MM-dd");
+            ViewBag.fechaFin = fechaFin;//?.ToString("yyyy-MM-dd");
+            ViewBag.tipoMovimiento = tipoMovimiento;
+            ViewBag.numeroDocumento = numeroDocumento;
             return View(lista);
         }
+        [HttpGet]
+        public async Task<IActionResult> NuevoMovimientoInventario()
+        {
+            MovimientoInventario model = new();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> NuevoMovimientoInventario([FromForm]MovimientoInventario model)
+        {
+            model.FECHA_TRANSACCION = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                bool respuesta = await _movimientoInventarioService.CrearMovimientoInventario(model);
+                TempData["Mensaje"] = _movimientoInventarioService._message;
+                if (respuesta)
+                    return RedirectToAction("index");
+            }
+            else
+                TempData["Mensaje"] = "Datos no válidos";
 
+            return View(model);
+        }
         public IActionResult Privacy()
         {
             return View();

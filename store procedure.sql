@@ -1,3 +1,7 @@
+USE DB_PRUEBATECNICADINET;
+GO
+drop PROCEDURE sp_ListaMovInventario;
+GO
 CREATE PROCEDURE sp_ListaMovInventario
 (
 	@FechaInicio as DATE=null,
@@ -7,20 +11,28 @@ CREATE PROCEDURE sp_ListaMovInventario
 )
 AS
 BEGIN
-	if (@FechaInicio <> NULL and @FechaFin <> null and @TipoMovimiento <> null and @NroDocumento <> null)
-	BEGIN
-		SELECT * --SELECCIONAR CAMPOS
-		FROM dbo.MOV_INVENTARIO
-	WHERE
-		TIPO_MOVIMIENTO = @TipoMovimiento
-		AND NRO_DOCUMENTO = @NroDocumento
-		AND (FECHA_TRANSACCION BETWEEN @FechaFin AND @FechaFin)
-	END
-	ELSE
-		SELECT * --SELECCIONAR CAMPOS
-		FROM dbo.MOV_INVENTARIO
-END
+    DECLARE @sql NVARCHAR(MAX);
+    DECLARE @whereClause NVARCHAR(MAX) = '';
 
+    IF @FechaInicio IS NOT NULL AND @FechaFin IS NOT NULL
+        SET @whereClause = @whereClause + ' AND FECHA_TRANSACCION BETWEEN @FechaInicio AND @FechaFin';
+
+    IF @TipoMovimiento IS NOT NULL
+        SET @whereClause = @whereClause + ' AND TIPO_MOVIMIENTO = @TipoMovimiento';
+
+    IF @NroDocumento IS NOT NULL
+        SET @whereClause = @whereClause + ' AND NRO_DOCUMENTO = @NroDocumento';
+
+    SET @sql = '
+        SELECT *
+        FROM dbo.MOV_INVENTARIO
+        WHERE 1 = 1 ' + @whereClause;
+
+    EXEC sp_executesql @sql,
+                        N'@FechaInicio date, @FechaFin date, @TipoMovimiento varchar(50), @NroDocumento varchar(50)',
+                        @FechaInicio, @FechaFin, @TipoMovimiento, @NroDocumento;
+END
+RETURN
 CREATE PROCEDURE sp_InsertarMovInventario
 (
 	@CodCia as VARCHAR(50)

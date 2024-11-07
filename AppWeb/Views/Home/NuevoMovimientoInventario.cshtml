@@ -1,0 +1,72 @@
+﻿@model CapaEntidades.MovimientoInventario
+
+@{
+    ViewData["Title"] = "Nuevo Movimiento de Inventario";
+}
+
+<h2>Ingreso de datos de Movimiento de Inventario</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NuevoMovimientoInventario">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group text-center">
+                <label asp-for="COD_CIA" class="control-label fw-bold"></label>
+                <input asp-for="COD_CIA" class="form-control" />
+                <span asp-validation-for="COD_CIA" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="COMPANIA_VENTA_3" class="control-label fw-bold"></label>
+                <input asp-for="COMPANIA_VENTA_3" class="form-control" />
+                <span asp-validation-for="COMPANIA_VENTA_3" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="ALMACEN_VENTA" class="control-label fw-bold"></label>
+                <input asp-for="ALMACEN_VENTA" class="form-control" />
+                <span asp-validation-for="ALMACEN_VENTA" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="TIPO_MOVIMIENTO" class="control-label fw-bold"></label>
+                <input asp-for="TIPO_MOVIMIENTO" class="form-control" />
+                <span asp-validation-for="TIPO_MOVIMIENTO" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="TIPO_DOCUMENTO" class="control-label fw-bold"></label>
+                <input asp-for="TIPO_DOCUMENTO" class="form-control" />
+                <span asp-validation-for="TIPO_DOCUMENTO" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="NRO_DOCUMENTO" class="control-label fw-bold"></label>
+                <input asp-for="NRO_DOCUMENTO" class="form-control" />
+                <span asp-validation-for="NRO_DOCUMENTO" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="COD_ITEM_2" class="control-label fw-bold"></label>
+                <input asp-for="COD_ITEM_2" class="form-control" />
+                <span asp-validation-for="COD_ITEM_2" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="PROVEEDOR" class="control-label fw-bold"></label>
+                <input asp-for="PROVEEDOR" class="form-control" />
+                <span asp-validation-for="PROVEEDOR" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="ALMACEN_DESTINO" class="control-label fw-bold"></label>
+                <input asp-for="ALMACEN_DESTINO" class="form-control" />
+                <span asp-validation-for="ALMACEN_DESTINO" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

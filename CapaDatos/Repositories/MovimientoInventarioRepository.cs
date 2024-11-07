@@ -24,11 +24,11 @@ namespace CapaDatos.Repositories
                 {
                     conexion.Open();
                     SqlCommand cmd = new("sp_ListaMovInventario", conexion);
-                    
-                    cmd.Parameters.AddWithValue("FechaInicio", FInicio);
-                    cmd.Parameters.AddWithValue("FechaFin", FFin);
-                    cmd.Parameters.AddWithValue("TipoMovimiento", TipoMovimento);
-                    cmd.Parameters.AddWithValue("NroDocumento", NumeroDocumento);
+      
+                    cmd.Parameters.AddWithValue("FechaInicio", FInicio!=null? FInicio : DBNull.Value);
+                    cmd.Parameters.AddWithValue("FechaFin", FFin != null ? FInicio : DBNull.Value);
+                    cmd.Parameters.AddWithValue("TipoMovimiento", string.IsNullOrEmpty(TipoMovimento) ? DBNull.Value : TipoMovimento );
+                    cmd.Parameters.AddWithValue("NroDocumento", string.IsNullOrEmpty(NumeroDocumento) ? DBNull.Value : NumeroDocumento);
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var dr = await cmd.ExecuteReaderAsync())
                         {
@@ -65,7 +65,6 @@ namespace CapaDatos.Repositories
             bool retorno = false;
             try
             {
-
                 using (var conexion = new SqlConnection(_cadenaSQL))
                 {
                     conexion.Open();
@@ -79,7 +78,7 @@ namespace CapaDatos.Repositories
                     cmd.Parameters.AddWithValue("CodItem2", entity.COD_ITEM_2);
                     cmd.Parameters.AddWithValue("FechaTransaccion", entity.FECHA_TRANSACCION);
                     cmd.Parameters.AddWithValue("Proveedor", entity.PROVEEDOR);
-                    cmd.Parameters.AddWithValue("Almacen_Destino", entity.ALMACEN_DESTINO);
+                    cmd.Parameters.AddWithValue("AlmacenDestino", entity.ALMACEN_DESTINO);
                     cmd.CommandType = CommandType.StoredProcedure;
                     int filasAfectadas = await cmd.ExecuteNonQueryAsync();
                     if (filasAfectadas > 0)

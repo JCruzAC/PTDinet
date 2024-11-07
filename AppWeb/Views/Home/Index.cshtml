@@ -3,7 +3,7 @@
     ViewData["Title"] = "Lista de Movimiento de Inventarios";
 }
 
-@if (TempData["Mensaje"] != null)
+@if (TempData["Mensaje"] != null && TempData["Mensaje"] != "")
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         @TempData["Mensaje"]
@@ -14,10 +14,31 @@
 <div class="container-md">
     <div class="row p-1" id="fila_BotonNuevo-Filtro">
         <div class="col-sm text-center text-sm-start " id="botonNuevo">
-            <a asp-action="Insertar" asp-asp-controller="Cargos" class="btn btn-success">Nuevo Movimiento Inventario</a>
+            <a asp-action="NuevoMovimientoInventario" asp-asp-controller="Home" class="btn btn-success">Nuevo Movimiento Inventario</a>
         </div>
         <div class="col-sm text-center text-sm-end" id="formularioFiltro">
         </div>
+    </div>
+    <div class="col-sm text-center text-sm-end" id="formularioFiltro">
+        <form asp-action="Index" method="get">
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <label class="fw-bold">Fecha inicio</label><input type="date" name="fechaInicio" class="form-control form-control-sm" value="@ViewBag.fechaInicio" placeholder="Fecha Inicio" />
+                </div>
+                <div class="col-md-3 text-center">
+                    <label class="fw-bold">Fecha fin</label><input type="date" name="fechaFin" class="form-control form-control-sm" value="@ViewBag.fechaFin" placeholder="Fecha Fin" />
+                </div>
+                <div class="col-md-3 text-center">
+                    <label class="fw-bold">Tipo movimiento</label><input type="text" name="tipoMovimiento" class="form-control form-control-sm" value="@ViewBag.tipoMovimiento" placeholder="Tipo de Movimiento" />
+                </div>
+                <div class="col-md-3 text-center">
+                    <label class="fw-bold">Número documento</label><input type="text" name="numeroDocumento" class="form-control form-control-sm" value="@ViewBag.numeroDocumento" placeholder="Número de Documento" />
+                </div>
+                <div class="col-md-12 text-center">
+                    <input type="submit" value="Filtrar" class="btn btn-primary btn-block" />
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -26,7 +47,7 @@
     <div class="row p-1">
         <div class="card border">
             <div class="card-header">
-                <h3 class="text-center">Lista de cargos</h3>
+                <h3 class="text-center">Movimientos de Inventario</h3>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -36,7 +57,7 @@
                             <thead>
                                 <tr>
                                     <th>@Html.DisplayNameFor(m => m.FECHA_TRANSACCION)</th>
-                                    <th>@Html.DisplayNameFor(m => m.TIPO_DOCUMENTO)</th>
+                                    <th>@Html.DisplayNameFor(m => m.TIPO_MOVIMIENTO)</th>
                                     <th>@Html.DisplayNameFor(m => m.NRO_DOCUMENTO)</th>
                                     <th>@Html.DisplayNameFor(m => m.ALMACEN_DESTINO)</th>
 
@@ -47,8 +68,8 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>@Html.DisplayFor(m => item.FECHA_TRANSACCION)</td>
-                                        <td>@Html.DisplayFor(m => item.TIPO_DOCUMENTO)</td>
+                                        <td>@(item.FECHA_TRANSACCION.Date.ToString("dd/MM/yyyy"))</td>
+                                        <td>@Html.DisplayFor(m => item.TIPO_MOVIMIENTO)</td>
                                         <td>@Html.DisplayFor(m => item.NRO_DOCUMENTO)</td>
                                         <td>@Html.DisplayFor(m => item.ALMACEN_DESTINO)</td>
                                         <td>
